@@ -1,0 +1,7 @@
+__pycache__
+csv_test
+*.csv
+*.html
+*.js
+*.har
+*.hex
