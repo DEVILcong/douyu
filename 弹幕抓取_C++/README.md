@@ -16,24 +16,43 @@ test_douyu.cpp 主（main）函数，使用主要功能函数
 ## chatmsg
 CREATE TABLE chatmsg(
     cid varchar(35) primary key,   //弹幕唯一标识，斗鱼提供
+
     uid varchar(12),               //斗鱼用户ID
+
     name varchar(36),              //用户昵称
+
     level smallint,                //用户等级
+
     device smallint,               //发送弹幕使用的设备
+
     badge varchar(15),             //用户带的牌子的名称
+
     blevel smallint,               //用户带的牌子的等级
+
     txt varchar(70),               //弹幕内容
+
     color smallint,                //弹幕颜色
+
     time timestamp);               //弹幕时间戳
+
 
 ## dgb
 CREATE TABLE dgb(
     no integer primary key,        //序号，从1开始自增
+
     uid varchar(12),               //斗鱼用户ID
+
     name varchar(36),              //用户昵称
+
     level smallint,                //用户等级
+
     device smallint,               //赠送礼物所用的设备
+
     badge varchar(15),             //用户带的牌子的名称
+
     blevel smallint,               //用户带的牌子的等级
+
     gift varchar(20),              //礼物名称(弱鸡、稳等)，在douyu_danmu.cpp中开头有表
+
     hits smallint);                //数量（注意：仅作参考！！！！）
+
