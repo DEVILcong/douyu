@@ -8,6 +8,7 @@
 
 # 文件结构
 douyu_danmu.hpp douyu_danmu.cpp  主要函数
+
 test_douyu.cpp 主（main）函数，使用主要功能函数
 
 # 数据库描述
@@ -15,6 +16,7 @@ test_douyu.cpp 主（main）函数，使用主要功能函数
 
 ## chatmsg
 CREATE TABLE chatmsg(
+
     cid varchar(35) primary key,   //弹幕唯一标识，斗鱼提供
 
     uid varchar(12),               //斗鱼用户ID
@@ -38,6 +40,7 @@ CREATE TABLE chatmsg(
 
 ## dgb
 CREATE TABLE dgb(
+
     no integer primary key,        //序号，从1开始自增
 
     uid varchar(12),               //斗鱼用户ID
