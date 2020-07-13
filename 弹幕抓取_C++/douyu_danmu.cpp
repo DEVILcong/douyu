@@ -355,106 +355,109 @@ void Douyu_Danmu::recv_message(void){
             this->queue_lock.unlock();
 
             std::cout << p["type"] << "\t" << p["rid"]  << "\t" << p["txt"] << "  " << packages.size()<< std::endl;
-            if( p["type"] == "chatmsg"){
-                sqlite3_bind_text(this->insert_chatmsg, 1, p["cid"].c_str(), p["cid"].size(), SQLITE_STATIC);
-                sqlite3_bind_text(this->insert_chatmsg, 2, p["uid"].c_str(), p["uid"].size(), SQLITE_STATIC);
-                sqlite3_bind_text(this->insert_chatmsg, 3, p["nn"].c_str(), p["nn"].size(), SQLITE_STATIC);
-                sqlite3_bind_text(this->insert_chatmsg, 8, p["txt"].c_str(), p["txt"].size(), SQLITE_STATIC);
-                sqlite3_bind_text(this->insert_chatmsg, 6, p["bnn"].c_str(), p["bnn"].size(), SQLITE_STATIC);
 
-                try{
-                    sqlite3_bind_int(this->insert_chatmsg, 4, std::stoi(p["level"]));
-                }catch(std::invalid_argument& e){
-                    sqlite3_bind_null(this->insert_chatmsg, 4);
-                }
+            if(this->isEnableSqlite){
+                if( p["type"] == "chatmsg"){
+                    sqlite3_bind_text(this->insert_chatmsg, 1, p["cid"].c_str(), p["cid"].size(), SQLITE_STATIC);
+                    sqlite3_bind_text(this->insert_chatmsg, 2, p["uid"].c_str(), p["uid"].size(), SQLITE_STATIC);
+                    sqlite3_bind_text(this->insert_chatmsg, 3, p["nn"].c_str(), p["nn"].size(), SQLITE_STATIC);
+                    sqlite3_bind_text(this->insert_chatmsg, 8, p["txt"].c_str(), p["txt"].size(), SQLITE_STATIC);
+                    sqlite3_bind_text(this->insert_chatmsg, 6, p["bnn"].c_str(), p["bnn"].size(), SQLITE_STATIC);
 
-                try{
-                    sqlite3_bind_int(this->insert_chatmsg, 5, std::stoi(p["ct"]));
-                }catch(std::invalid_argument& e){
-                    sqlite3_bind_null(this->insert_chatmsg, 5);
-                }
+                    try{
+                        sqlite3_bind_int(this->insert_chatmsg, 4, std::stoi(p["level"]));
+                    }catch(std::invalid_argument& e){
+                        sqlite3_bind_null(this->insert_chatmsg, 4);
+                    }
 
-                try{
-                    sqlite3_bind_int(this->insert_chatmsg, 7, std::stoi(p["bl"]));
-                }catch(std::invalid_argument& e){
-                    sqlite3_bind_null(this->insert_chatmsg, 7);
-                }
+                    try{
+                        sqlite3_bind_int(this->insert_chatmsg, 5, std::stoi(p["ct"]));
+                    }catch(std::invalid_argument& e){
+                        sqlite3_bind_null(this->insert_chatmsg, 5);
+                    }
 
-                try{
-                    sqlite3_bind_int(this->insert_chatmsg, 9, std::stoi(p["col"]));
-                }catch(std::invalid_argument& e){
-                    sqlite3_bind_null(this->insert_chatmsg, 9);
-                }
+                    try{
+                        sqlite3_bind_int(this->insert_chatmsg, 7, std::stoi(p["bl"]));
+                    }catch(std::invalid_argument& e){
+                        sqlite3_bind_null(this->insert_chatmsg, 7);
+                    }
 
-                try{
-                    sqlite3_bind_int(this->insert_chatmsg, 10, std::stoi(p["cst"].substr(0, 10)));
-                }catch(std::invalid_argument& e){
-                    sqlite3_bind_null(this->insert_chatmsg, 10);
-                }
+                    try{
+                        sqlite3_bind_int(this->insert_chatmsg, 9, std::stoi(p["col"]));
+                    }catch(std::invalid_argument& e){
+                        sqlite3_bind_null(this->insert_chatmsg, 9);
+                    }
+
+                    try{
+                        sqlite3_bind_int(this->insert_chatmsg, 10, std::stoi(p["cst"].substr(0, 10)));
+                    }catch(std::invalid_argument& e){
+                        sqlite3_bind_null(this->insert_chatmsg, 10);
+                    }
                     
-                status = sqlite3_step(this->insert_chatmsg);
-                if(status != SQLITE_DONE){
-                    std::cerr << "WARNING: failed to insert database" << std::endl;
-                    std::cerr << sqlite3_errstr(status) << std::endl;
-                }
+                    status = sqlite3_step(this->insert_chatmsg);
+                    if(status != SQLITE_DONE){
+                        std::cerr << "WARNING: failed to insert database" << std::endl;
+                        std::cerr << sqlite3_errstr(status) << std::endl;
+                    }
 
-                status = sqlite3_reset(this->insert_chatmsg);
-                if(status != SQLITE_OK){
-                    std::cerr << "WARNING: reset statement error" << std::endl;
-                    std::cerr << sqlite3_errstr(status) << std::endl;
-                }
-            }else if(p["type"] == "dgb"){
-                sqlite3_bind_text(this->insert_dgb, 1, p["uid"].c_str(), p["uid"].size(), SQLITE_STATIC);
-                sqlite3_bind_text(this->insert_dgb, 2, p["nn"].c_str(), p["nn"].size(), SQLITE_STATIC);
-                //sqlite3_bind_int(this->insert_dgb, 3, std::stoi(p["level"]));
-                //sqlite3_bind_int(this->insert_dgb, 4, std::stoi(p["ct"]));
-                sqlite3_bind_text(this->insert_dgb, 5, p["bnn"].c_str(), p["bnn"].size(), SQLITE_STATIC);
-                //sqlite3_bind_int(this->insert_dgb, 6, std::stoi(p["bl"]));
+                    status = sqlite3_reset(this->insert_chatmsg);
+                    if(status != SQLITE_OK){
+                        std::cerr << "WARNING: reset statement error" << std::endl;
+                        std::cerr << sqlite3_errstr(status) << std::endl;
+                    }
+                }else if(p["type"] == "dgb"){
+                    sqlite3_bind_text(this->insert_dgb, 1, p["uid"].c_str(), p["uid"].size(), SQLITE_STATIC);
+                    sqlite3_bind_text(this->insert_dgb, 2, p["nn"].c_str(), p["nn"].size(), SQLITE_STATIC);
+                    //sqlite3_bind_int(this->insert_dgb, 3, std::stoi(p["level"]));
+                    //sqlite3_bind_int(this->insert_dgb, 4, std::stoi(p["ct"]));
+                    sqlite3_bind_text(this->insert_dgb, 5, p["bnn"].c_str(), p["bnn"].size(), SQLITE_STATIC);
+                    //sqlite3_bind_int(this->insert_dgb, 6, std::stoi(p["bl"]));
 
-                try{
-                    sqlite3_bind_int(this->insert_dgb, 3, std::stoi(p["level"]));
-                }catch(std::invalid_argument& e){
-                    sqlite3_bind_null(this->insert_dgb, 3);
-                }
+                    try{
+                        sqlite3_bind_int(this->insert_dgb, 3, std::stoi(p["level"]));
+                    }catch(std::invalid_argument& e){
+                        sqlite3_bind_null(this->insert_dgb, 3);
+                    }
 
-                try{
-                    sqlite3_bind_int(this->insert_dgb, 4, std::stoi(p["ct"]));
-                }catch(std::invalid_argument& e){
-                    sqlite3_bind_null(this->insert_dgb, 4);
-                }
+                    try{
+                        sqlite3_bind_int(this->insert_dgb, 4, std::stoi(p["ct"]));
+                    }catch(std::invalid_argument& e){
+                        sqlite3_bind_null(this->insert_dgb, 4);
+                    }
 
-                try{
-                    sqlite3_bind_int(this->insert_dgb, 6, std::stoi(p["bl"]));
-                }catch(std::invalid_argument& e){
-                    sqlite3_bind_null(this->insert_dgb, 6);
-                }
+                    try{
+                        sqlite3_bind_int(this->insert_dgb, 6, std::stoi(p["bl"]));
+                    }catch(std::invalid_argument& e){
+                        sqlite3_bind_null(this->insert_dgb, 6);
+                    }
 
 
-                std::string gift_name;
-                if(Gifts::gift_type[p["gfid"]] != ""){
-                    gift_name = Gifts::gift_type[p["gfid"]];
-                }else{
-                    gift_name = p["gfid"];
-                }
-                sqlite3_bind_text(this->insert_dgb, 7, gift_name.c_str(), gift_name.size(), SQLITE_STATIC);
+                    std::string gift_name;
+                    if(Gifts::gift_type[p["gfid"]] != ""){
+                        gift_name = Gifts::gift_type[p["gfid"]];
+                    }else{
+                        gift_name = p["gfid"];
+                    }
+                    sqlite3_bind_text(this->insert_dgb, 7, gift_name.c_str(), gift_name.size(), SQLITE_STATIC);
 
-                try{
-                    sqlite3_bind_int(this->insert_dgb, 8, std::stoi(p["hits"]));
-                }catch(std::invalid_argument &e){
-                    sqlite3_bind_null(this->insert_dgb, 8);
+                    try{
+                        sqlite3_bind_int(this->insert_dgb, 8, std::stoi(p["hits"]));
+                    }catch(std::invalid_argument &e){
+                        sqlite3_bind_null(this->insert_dgb, 8);
 
-                }
+                    }
 
-                status = sqlite3_step(this->insert_dgb);
-                if(status != SQLITE_DONE){
-                    std::cerr << "WARNING: failed to insert database" << std::endl;
-                    std::cerr << sqlite3_errstr(status) << std::endl;
-                }
+                    status = sqlite3_step(this->insert_dgb);
+                    if(status != SQLITE_DONE){
+                        std::cerr << "WARNING: failed to insert database" << std::endl;
+                        std::cerr << sqlite3_errstr(status) << std::endl;
+                    }
 
-                status = sqlite3_reset(this->insert_dgb);
-                if(status != SQLITE_OK){
-                    std::cerr << "WARNING: reset statement error" << std::endl;
-                    std::cerr << sqlite3_errstr(status) << std::endl;
+                    status = sqlite3_reset(this->insert_dgb);
+                    if(status != SQLITE_OK){
+                        std::cerr << "WARNING: reset statement error" << std::endl;
+                        std::cerr << sqlite3_errstr(status) << std::endl;
+                    }
                 }
             }
             
