@@ -20,16 +20,33 @@ def add_header(content_dict):
     
     return length + length + fix_data + tmp_str_b
 
+async def login_proc(url_str, union_header, login_content):
+    async with AioWebSocket(url_str, union_header = union_header) as aws:
+        converse = aws.manipulator
+        message = add_header(login_content)
+
+        #await converse.send(message)
+        #print('message sent', message)
+
+        while True:
+            message = await converse.receive()
+            print('get message ', message)
+
 union_header = {
-    'Host': 'danmuproxy.douyu.com:8503',
+    'Accept-Encoding':'gzip, deflate, br',
+    'Accept-Language':'en-US,en;q=0.9,zh-CN;q=0.8,zh-TW;q=0.7,zh;q=0.6',
+    'Host': 'danmuproxy.douyu.com:8501',
     'Origin':'https://www.douyu.com',
+    'Connection':'Upgrade',
+    'Upgrade':'websocket',
+    'Sec-WebSocket-Key':' 5dY5OE2EUgvGWNvxRDj00Q==',
     'Sec-WebSocket-Extentions':'permessage-deflate; client_max_window_bits',
     'Sec-WebSocket-Version':'13',
-    'User-Agent':'Chrome/81.0.4044.129' 
+    'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36' 
     }
 login_content = {
     'type':'loginreq',
-    'roomid':'290935',
+    'roomid':'94228',
     'dfl':'sn@AA=105@ASss@AA=1',
     'username':'337596139',
     'uid':'337596139',
@@ -44,5 +61,4 @@ join_group_content = {
     }
 logout_content = {'type':'logout'}
 
-a = add_header(login_content)
-print(a.hex())
+asyncio.get_event_loop().run_until_complete(login_proc('ws://danmuproxy.douyu.com:8501', union_header, login_content))

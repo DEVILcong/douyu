@@ -1,0 +1,5 @@
+*.png
+*.js
+*.html
+data_ex
+__pycache__
