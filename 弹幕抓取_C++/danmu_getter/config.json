@@ -1,0 +1,9 @@
+{
+    "ws_origin": "https://www.douyu.com",
+	"ws_protocol": "wss://",
+	"ws_host": "danmuproxy.douyu.com",
+	"ws_port": "8504",
+	"package_type_from_client": 689,
+	"package_type_from_server": 690,
+	"logfile_suffix": ".log"
+}
